@@ -27,7 +27,7 @@ class Character_Sheet:
 		self.skills = Skills(self)
 #---- Traits
 class Traits:
-	'''This class es meant to help organize  and bookkeep traits.'''
+	'''This class is meant to help organize  and bookkeep traits.'''
 	pass
 #---- Abilities
 class Abilities:
@@ -168,7 +168,7 @@ class Skills:
 		'''Class to generate character skill objects.'''
 		def __init__(self, name, key_ability, character):
 			self.name = name
-			self.proficiency = proficiency
+			self.proficiency = 'untrained'
 			self.character = character
 			self.key_ability = key_ability
 			self.key_ability.stats = self
