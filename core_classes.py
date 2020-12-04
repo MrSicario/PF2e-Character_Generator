@@ -1,4 +1,4 @@
-# Pathfinder 2e - Character Generator - v0.02
+# Pathfinder 2e - Character Generator - v0.01
 # Python 3.9
 # Base Code
 #-- Imports
@@ -46,6 +46,12 @@ class Abilities:
 		self.character.int = self.int
 		self.character.wis = self.wis
 		self.character.cha = self.cha
+	def __repr__(self):
+		string = ''
+		for x, y in vars(self).items():
+			if y != self.character:
+				string += (str(y) + '\n')
+		return string
 	class Ability:
 		'''Class to generate ability objects.'''
 		def __init__(self, keyword, name):
@@ -54,6 +60,14 @@ class Abilities:
 			self.score = 10
 			self.stats = self.Related_Stats()
 			self.det_mod()
+		def __repr__(self):
+			string = self.name
+			while len(string) <= 13:
+				string += ' '
+			if self.score <= 9:
+				return string + '| ' + str(self.score) + '|' + str(self.mod)
+			else:
+				return string + '|' + str(self.score) + '|+' + str(self.mod)
 		def det_mod(self):
 			self.mod = (self.score-10)//2
 			for x, y in vars(self.stats).items():
@@ -69,7 +83,11 @@ class Abilities:
 			self.det_mod()
 		class Related_Stats:
 			'''Class to bookkeep skills related to any given ability object.'''
-			pass
+			def __repr__(self):
+				string = ''
+				for x, y in vars(self).items():
+					string += (str(y) + '\n')
+				return string
 #---- Perception
 class Perception:
 	'''Class to generate Perception object'''
@@ -79,6 +97,14 @@ class Perception:
 		self.character = character
 		self.character.wis.stats.perception = self
 		self.update()
+	def __repr__(self):
+		string = self.name
+		while len(string) <= 13:
+			string += ' '
+		if self.mod < 0:
+			return string + str(self.mod)
+		else:
+			return string + '+' + str(self.mod)
 	def update(self):
 		if self.proficiency == 'untrained':
 			self.mod = self.character.wis.mod
@@ -164,6 +190,30 @@ class Skills:
 		self.character.stealth = self.stealth
 		self.character.survival = self.survival
 		self.character.thievery = self.thievery
+		self.character.dex.stats.acrobatics = self.acrobatics
+		self.character.int.stats.arcana = self.arcana
+		self.character.str.stats.athletics = self.athletics
+		self.character.int.stats.crafting = self.crafting
+		self.character.cha.stats.deception = self.deception
+		self.character.cha.stats.diplomacy = self.diplomacy
+		self.character.cha.stats.intimidation = self.intimidation
+		self.character.int.stats.lore1 = self.lore1
+		self.character.int.stats.lore2 = self.lore2
+		self.character.wis.stats.medicine = self.medicine
+		self.character.wis.stats.nature = self.nature
+		self.character.int.stats.occultism = self.occultism
+		self.character.cha.stats.performance = self.performance
+		self.character.wis.stats.religion = self.religion
+		self.character.int.stats.society = self.society
+		self.character.dex.stats.stealth = self.stealth
+		self.character.wis.stats.survival = self.survival
+		self.character.dex.stats.thievery = self.thievery
+	def __repr__(self):
+		string = ''
+		for x, y in vars(self).items():
+			if y != self.character:
+				string += (str(y) + '\n')
+		return string
 	class Skill:
 		'''Class to generate character skill objects.'''
 		def __init__(self, name, key_ability, character):
@@ -171,8 +221,16 @@ class Skills:
 			self.proficiency = 'untrained'
 			self.character = character
 			self.key_ability = key_ability
-			self.key_ability.stats = self
+			self.key_ability_keyword = self.key_ability.keyword
 			self.update()
+		def __repr__(self):
+			string = self.name
+			while len(string) <= 13:
+				string += ' '
+			if self.mod < 0:
+				return string + str(self.mod)
+			else:
+				return string + '+' + str(self.mod)
 		def update(self):
 			if self.proficiency == 'untrained':
 				self.mod = self.key_ability.mod
